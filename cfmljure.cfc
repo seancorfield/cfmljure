@@ -1,6 +1,6 @@
 ﻿component {
 /*
-	Copyright (c) 2012, Sean Corfield
+	Copyright (c) 2012-2014, Sean Corfield
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -86,7 +86,9 @@
 	public any function _get( string ref ) {
 		if ( !structKeyExists( variables._refCache, ref ) ) {
             if ( find( ".", ref ) ) throw "Qualified name #ref# unsupported in get()";
-            var fn = replace( ref, "_", "-", "all" );
+            var fn = replace( replaceNoCase( replaceNoCase( ref, "_qmark_", "?" ), 
+                                             "_bang_", "!" ),
+                              "_", "-", "all" );
             var ns = replace( variables._ns, "_", "-", "all" );
 			var r = variables._rt.var( ns, fn );
 			variables._refCache[ref] = new cfmljure( variables._rt, variables._ns )._def( r );
